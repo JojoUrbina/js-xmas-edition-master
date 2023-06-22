@@ -13,12 +13,26 @@ function validacionNombre(nombre){
     }
     return ""
 }
-function ValidacionCiudad(ciudad) {
+function validacionCiudad(ciudad) {
     if (ciudad==="") {
         return "debe elegir alguna ciudad"
     }
     return ""
 }
-console.log(ValidacionCiudad("Buenos Aires"))
+function validacionDescripcionRegalo(descripcionRegalo) {
+    if (descripcionRegalo.length<=50) {
+        return "este campo debe tener un minimo de 50 caracteres"
+    }
+    if (descripcionRegalo.length>200) {
+        return "este campo debe tener menos de 200 caracteres"
+    }
+    return ""
+}
+
+
+
+
 
 validacionNombre(nombre)
+validacionCiudad(ciudad)
+validacionDescripcionRegalo(descripcionRegalo)
