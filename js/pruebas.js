@@ -29,16 +29,28 @@ function probarValidacionCiudad() {
 }
 
 function probarValidacionDescripcionRegalo() {
-// Caso 1: Descripción con menos de 50 caracteres
-console.assert(validacionDescripcionRegalo("Descripción corta") === "este campo debe tener un mínimo de 50 caracteres", "La validación descripciónRegalo no valido una descripción con menos de 50 caracteres");
+  console.assert(
+    validacionDescripcionRegalo("Descripción corta") ===
+      "este campo debe tener un mínimo de 50 caracteres",
+    "La validación descripciónRegalo no valido una descripción con menos de 50 caracteres"
+  );
 
-// Caso 2: Descripción con 50 caracteres(tiene 91 caracteres)
-console.assert(validacionDescripcionRegalo("1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950") === "", "La validación descripciónRegalo no valido una descripcion correcta con mas de 50 caracteres y menos de 200");
+  // (tiene 91 caracteres)
+  console.assert(
+    validacionDescripcionRegalo(
+      "1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950"
+    ) === "",
+    "La validación descripciónRegalo no valido una descripcion correcta con mas de 50 caracteres y menos de 200"
+  );
 
-// Caso 3: Descripción con más de 200 caracteres(tiene 201 caracteres)
-console.assert(validacionDescripcionRegalo("123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100111111111") === 
-"este campo debe tener menos de 200 caracteres", 
-"La validación descripciónRegalo no valido que la descripcion tuviera menos de 200 caracteres");
-    
+  // (tiene 201 caracteres)
+  console.assert(
+    validacionDescripcionRegalo(
+      "123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100111111111"
+    ) === "este campo debe tener menos de 200 caracteres",
+    "La validación descripciónRegalo no valido que la descripcion tuviera menos de 200 caracteres"
+  );
 }
+probarValidacionNombre();
 probarValidacionCiudad();
+probarValidacionDescripcionRegalo();
