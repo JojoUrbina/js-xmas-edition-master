@@ -11,6 +11,9 @@ function validacionNombre(nombre) {
   if (nombre.length >= 50) {
     return "este campo debe tener menos de 50 caracteres";
   }
+  if (!/^[a-z]+$/i.test(nombre)) {
+    return "este campo solo acepta letras"
+  }
   return "";
 }
 function validacionCiudad(ciudad) {
@@ -20,14 +23,18 @@ function validacionCiudad(ciudad) {
   return "";
 }
 function validacionDescripcionRegalo(descripcionRegalo) {
-  if (descripcionRegalo.length <= 50) {
-    return "este campo debe tener un minimo de 50 caracteres";
+  if(!/^[a-z0-9 ]+$/i.test(descripcionRegalo)){
+    return "el campo descripcionRegalo debe tener solo letras y numeros"
   }
-  if (descripcionRegalo.length > 200) {
-    return "este campo debe tener menos de 200 caracteres";
+  else if (descripcionRegalo.length <= 50) {
+    return "el campo descripcionRegalo debe tener un minimo de 50 caracteres";
   }
-  return "";
+  else if (descripcionRegalo.length > 200) {
+    return "el campo descripcionRegalo debe tener menos de 200 caracteres";
+  }else{return ""}
 }
+
+
 validacionNombre(nombre);
 validacionCiudad(ciudad);
-validacionDescripcionRegalo(descripcionRegalo);
+console.log(validacionDescripcionRegalo(descripcionRegalo));

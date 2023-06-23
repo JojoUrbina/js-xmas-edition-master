@@ -7,7 +7,7 @@ function probarValidacionNombre() {
   console.assert(
     validacionNombre(
       "1231132132131312312312312321123213213211111111111111111111111111111111123"
-    ) === "Este campo debe tener menos de 50 caracteres",
+    ) === "este campo debe tener menos de 50 caracteres",
     "Validar nombre no valido que el nombre sea menor a 50 caracteres"
   );
 
@@ -15,6 +15,12 @@ function probarValidacionNombre() {
     validacionNombre("Ejemplo") === "",
     "La validación del nombre falló para un nombre válido"
   );
+
+  console.assert(
+    validacionNombre("12333")===
+    "este campo solo acepta letras",
+    "validacionNombre no valido que solo tenga letras el nombre"
+  )
 }
 
 function probarValidacionCiudad() {
@@ -30,8 +36,7 @@ function probarValidacionCiudad() {
 
 function probarValidacionDescripcionRegalo() {
   console.assert(
-    validacionDescripcionRegalo("Descripción corta") ===
-      "este campo debe tener un mínimo de 50 caracteres",
+    validacionDescripcionRegalo("descripcion corta")==="el campo descripcionRegalo debe tener un minimo de 50 caracteres",
     "La validación descripciónRegalo no valido una descripción con menos de 50 caracteres"
   );
 
@@ -47,9 +52,15 @@ function probarValidacionDescripcionRegalo() {
   console.assert(
     validacionDescripcionRegalo(
       "123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100111111111"
-    ) === "este campo debe tener menos de 200 caracteres",
+    ) === "el campo descripcionRegalo debe tener menos de 200 caracteres",
     "La validación descripciónRegalo no valido que la descripcion tuviera menos de 200 caracteres"
   );
+  console.assert(
+    validacionDescripcionRegalo(",........,")==="el campo descripcionRegalo debe tener solo letras y numeros",
+      "La validacion descripcionRegalo no valido que el campo descripcionRegalo sean solo numeros y letras"
+  )
+
+
 }
 probarValidacionNombre();
 probarValidacionCiudad();
