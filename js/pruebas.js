@@ -19,7 +19,7 @@ function probarValidacionNombre() {
   console.assert(
     validacionNombre("12333")===
     "este campo solo acepta letras",
-    "validacionNombre no valido que solo tenga letras el nombre"
+    "validacionNombre no valido que solo tenga letras "
   )
 }
 
