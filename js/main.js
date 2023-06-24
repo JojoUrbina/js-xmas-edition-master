@@ -29,7 +29,7 @@ function validacionDescripcionRegalo(descripcionRegalo) {
   }
 }
 function validarFormulario(event) {
- 
+  
   
   const $form =document.querySelector("#carta-a-santa");
   
@@ -47,11 +47,12 @@ function validarFormulario(event) {
     descripcionRegalo:errorDescripcionRegalo
   };
   manejarErrores(errores)
-
+  
   event.preventDefault();
 }
 
 function manejarErrores(errores) {
+  
   errorNombre=errores.nombre;
   errorCiudad=errores.ciudad;
   errorDescripcionRegalo=errores.descripcionRegalo
@@ -62,8 +63,16 @@ function manejarErrores(errores) {
   } else {
     $form.nombre.className=""
   }
-
-  
+  if (errorCiudad) {
+    $form.ciudad.className="error"   
+  } else {
+    $form.ciudad.className=""
+  }
+  if (errorDescripcionRegalo) {
+    $form["descripcion-regalo"].className="error"
+  } else {
+    $form["descripcion-regalo"].className=""
+  }
 }
 const $form = document.querySelector("#carta-a-santa");
 
