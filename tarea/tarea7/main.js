@@ -1,3 +1,12 @@
+/*
+* Hacer las funciones de validación de validarCiudad y validarDescripcionRegalo.
+* Escribir pruebas para esas funciones.
+*
+* Adicional: Escribir pruebas para las funciones de tareas anteriores.
+*
+* */
+
+
 function validacionNombre(nombre) {
   if (nombre.length === 0) {
     return "este campo debe tener al menos 1 caracter";
@@ -92,4 +101,4 @@ function manejarErrores(errores) {
 const $form = document.querySelector("#carta-a-santa");
 
 $form.onsubmit = validarFormulario;
-//tarea: borrar la lista de errores en cada submit 1:53:00, bonus, borrar el campo adecuado en el else
+
