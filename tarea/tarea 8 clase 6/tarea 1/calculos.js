@@ -1,8 +1,7 @@
-function extraerNumeros() {
-    let $edadesFamiliares = document.querySelectorAll(".edad-familiar");
+function extraerNumeros(numeros) {
     let numerosExtraidos = [];
-    for (let i = 0; i < $edadesFamiliares.length; i++) {
-      numerosExtraidos.push(Number($edadesFamiliares[i].value));
+    for (let i = 0; i < numeros.length; i++) {
+      numerosExtraidos.push(Number(numeros[i].value));
     }
     return numerosExtraidos;
   }

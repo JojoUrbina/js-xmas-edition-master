@@ -11,15 +11,19 @@
 <body>
     <h1>App Edades Familiares</h1>
     
-    <form>
+    <form id="formulario">
         <label for="cantidad-familares">Cuantos familiares tienes:</label>
-        <input for="cantidad-familares" id="cantidad-familiares" type="number" placeholder="1,2,3..">
-        <button  id="agregar-familiares">Agregar familiares</button>
+        <input name="cantidad-familiares" for="cantidad-familares" id="cantidad-familiares" type="number" placeholder="1,2,3..">
+        <button  id="agregar-familiares" >Agregar familiares</button>
         <button  id="calcular">Calcular</button>
         <div id="familiares">
         </div>
         <button type="reset" id="empezar-de-nuevo"  >empezar de nuevo</button>
+        <ul id="errores">
+
+        </ul>
     </form>
+
     <p><strong id="resultado"></strong></p>
     <script type="text/javascript" src="tarea1.js"></script>
     <script src="calculos.js"></script>
