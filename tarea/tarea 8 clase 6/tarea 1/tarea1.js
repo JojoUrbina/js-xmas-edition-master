@@ -13,15 +13,6 @@ let $botonAgregarFamiliares = document.querySelector("#agregar-familiares");
 let $botonCalcular = document.querySelector("#calcular");
 let $botonEmpezarDeNuevo = document.querySelector("#empezar-de-nuevo");
 
-$botonAgregarFamiliares.onclick = function (e) {
-  let cantidadFamiliares = document.querySelector("#cantidad-familiares").value;
-  let errorCantidadFamiliares = validarCantidadFamiliares(cantidadFamiliares);
-
-  crearFamiliares(cantidadFamiliares);
-
-  e.preventDefault();
-};
-
 function validarCantidadFamiliares(cantidadFamiliares) {
   if (cantidadFamiliares <= 0) {
     return "la cantidad de familiares debe ser mayor a 0";
@@ -32,12 +23,32 @@ function validarCantidadFamiliares(cantidadFamiliares) {
   if (cantidadFamiliares === "") {
     return "debe escribir alguna cantidad entre 1 y 9";
   }
+  if (cantidadFamiliares==="") {
+    return "este campo no puede estar vacio"
+  }
   return "";
 }
 function validadEdad(edad) {
-  
-  
+  if (edad>100) {
+    return "La edad debe ser menor de 100"
+  }
+  if (edad==="") {
+    return "este campo no puede estar vacio"
+  }
+  if (edad<0) {
+    return "la edad debe ser mayor a 0"    
+  }
+  return ""
 }
+
+$botonAgregarFamiliares.onclick = function (e) {
+  let cantidadFamiliares = document.querySelector("#cantidad-familiares").value;
+  let esValido = validarCantidadFamiliares(cantidadFamiliares) === "";
+  crearFamiliares(cantidadFamiliares);
+
+  e.preventDefault();
+};
+
 
 
 function crearFamiliares(cantidadFamiliares) {
@@ -54,6 +65,7 @@ function crearFamiliares(cantidadFamiliares) {
     let $input = document.createElement("input");
     $input.placeholder = "ingresar Edad";
     $input.className = "edad-familiar";
+    $input.type="number"
 
     $div.appendChild($label);
     $div.appendChild($input);
