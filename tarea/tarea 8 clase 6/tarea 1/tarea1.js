@@ -35,15 +35,16 @@ function crearFamiliares(cantidadFamiliares) {
   }
 }
 function validarCantidadFamiliares(cantidadFamiliares) {
+  if (cantidadFamiliares === "") {
+    return "debe escribir alguna cantidad entre 1 y 9";
+  }
   if (cantidadFamiliares <= 0) {
     return "la cantidad de familiares debe ser mayor a 0";
   }
   if (cantidadFamiliares > 10) {
     return "la cantidad de familiares debe ser menor a 10";
   }
-  if (cantidadFamiliares === "") {
-    return "debe escribir alguna cantidad entre 1 y 9";
-  }
+
   if (cantidadFamiliares === "") {
     return "este campo no puede estar vacio";
   }
@@ -65,10 +66,11 @@ function validarEdad(edad) {
 $botonAgregarFamiliares.onclick = function (e) {
   let cantidadFamiliares = document.querySelector("#cantidad-familiares").value;
   const errorCantidad = validarCantidadFamiliares(cantidadFamiliares);
-  if (errorCantidad) {
+  if (errorCantidad === "") {
     manejarErrorCantidad(errorCantidad);
-  } else {
     crearFamiliares(cantidadFamiliares);
+  } else {
+    manejarErrorCantidad(errorCantidad);
   }
   e.preventDefault();
 };
@@ -104,18 +106,25 @@ function EmpezarDeNuevo() {
     divsExistentes[i].remove();
   }
 }
-function validarFormulario() {
-  const cantidadFamiliares = $form["cantidad-familiares"].value;
-  const $edadesFamiliares = document.querySelectorAll(".edad-familiar");
-  const edadesFamilares = extraerNumeros($edadesFamiliares);
+function manejarErrorCantidad(error) {
+  let $errorCantidad = document.querySelector("#errores #error-cantidad");
+  let $cantidadFamiliares = document.querySelector("#cantidad-familiares");
+  if (error) {
+    $errorCantidad.innerText = error;
+    $errorCantidad.className = "";
+    $cantidadFamiliares.className = "error";
+  } else {
+    $errorCantidad.innerText = "";
+    $errorCantidad.className = "oculto";
+    $cantidadFamiliares.className = "";
+  }
 }
 
-function manejarErrorCantidad(errorCantidad) {
-  const $errores = document.querySelector("#errores");
-  if (errorCantidad) {
-    const $error = document.createElement("li");
-    $error.innerText = errorCantidad;
-    $errores.appendChild($error);
+function eliminarErrorRepetido($listaDeErrores, error) {
+  for (let i = 0; i < $listaDeErrores.length; i++) {
+    if (error === $listaDeErrores[i].innerText) {
+      $listaDeErrores[i].remove();
+    }
   }
 }
 
