@@ -34,10 +34,23 @@ function crearFamiliares(cantidadFamiliares) {
     $divFamiliar.appendChild($div);
   }
 }
-function validarCantidadFamiliares(cantidadFamiliares) {
-  if (cantidadFamiliares === "") {
-    return "debe escribir alguna cantidad entre 1 y 9";
+function EmpezarDeNuevo() {
+  document.querySelector("#cantidad-familiares").value = "";
+  document.querySelector("#resultado").innerText = "";
+  let divsExistentes = document.querySelectorAll(".div-familiar");
+  for (let i = 0; i < divsExistentes.length; i++) {
+    divsExistentes[i].remove();
   }
+  const $liErrores = document.querySelectorAll("#errores .error-edad");
+  for (let i = 0; i < $liErrores.length; i++) {
+    $liErrores[i].remove();
+  }
+}
+function validarCantidadFamiliares(cantidadFamiliares) {
+  if (cantidadFamiliares==="") {
+    return "este campo no puede estar vacio"
+  }
+
   if (cantidadFamiliares <= 0) {
     return "la cantidad de familiares debe ser mayor a 0";
   }
@@ -45,9 +58,7 @@ function validarCantidadFamiliares(cantidadFamiliares) {
     return "la cantidad de familiares debe ser menor a 10";
   }
 
-  if (cantidadFamiliares === "") {
-    return "este campo no puede estar vacio";
-  }
+
   return "";
 }
 function validarEdad(edad) {
@@ -57,12 +68,63 @@ function validarEdad(edad) {
   if (edad === "") {
     return "este campo no puede estar vacio";
   }
-  if (edad < 0) {
+  if (edad <= 0) {
     return "la edad debe ser mayor a 0";
   }
   return "";
 }
 
+function manejarErrorCantidad(error) {
+  let $errorCantidad = document.querySelector("#errores #error-cantidad");
+  let $cantidadFamiliares = document.querySelector("#cantidad-familiares");
+  if (error) {
+    $errorCantidad.innerText = error;
+    $errorCantidad.className = "";
+    $cantidadFamiliares.className = "error";
+  } else {
+    $errorCantidad.innerText = "";
+    $errorCantidad.className = "oculto";
+    $cantidadFamiliares.className = "";
+  }
+}
+
+function manejarErrorEdad($edadesFamiliares) {
+  const $ulErrores = document.querySelector("#errores");
+  const $liErrores = document.querySelectorAll("#errores .error-edad");
+  let cantidadErrores = 0;
+  for (let i = 0; i < $liErrores.length; i++) {
+    $liErrores[i].remove();
+  }
+
+  $edadesFamiliares.forEach(function ($inputEdad) {
+    const errorEdad = validarEdad($inputEdad.value);
+    if (errorEdad) {
+      cantidadErrores++;
+      $inputEdad.classList.add("error");
+      let esRepetido = validarRepetidoEnLista(errorEdad);
+      if (!esRepetido) {
+        let $liError = document.createElement("li");
+        $liError.innerText = errorEdad;
+        $liError.className = "error-edad";
+        $ulErrores.appendChild($liError);
+      }
+    } else {
+      $inputEdad.classList.remove("error");
+    }
+  });
+  return cantidadErrores;
+}
+
+function validarRepetidoEnLista(errorEdad) {
+  const $liErrores = document.querySelectorAll("#errores .error-edad");
+  for (let i = 0; i < $liErrores.length; i++) {
+    if (errorEdad === $liErrores[i].innerText) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
 $botonAgregarFamiliares.onclick = function (e) {
   let cantidadFamiliares = document.querySelector("#cantidad-familiares").value;
   const errorCantidad = validarCantidadFamiliares(cantidadFamiliares);
@@ -79,16 +141,20 @@ $botonCalcular.onclick = function (e) {
   let $edadesFamiliares = document.querySelectorAll(".edad-familiar");
   let edadesFamiliares = extraerNumeros($edadesFamiliares);
 
-  let familiarMayor = extraerNumeroMayor(edadesFamiliares);
-  let familiarMenor = extraerNumeroMenor(edadesFamiliares);
-  let promedioEdadFamilia = calcularPromedio(edadesFamiliares).toFixed(2);
-  let $divResultado = document.querySelector("#resultado");
+  const esExito = manejarErrorEdad($edadesFamiliares) === 0;
 
-  let resultado = `El familiar con mas edad tiene ${familiarMayor} años,
-  el menor tiene ${familiarMenor} ${familiarMenor > 1 ? "años " : "año "}
-   y  el promedio de edad en la familia es de ${promedioEdadFamilia} años`;
+  if (esExito) {
+    let familiarMayor = extraerNumeroMayor(edadesFamiliares);
+    let familiarMenor = extraerNumeroMenor(edadesFamiliares);
+    let promedioEdadFamilia = calcularPromedio(edadesFamiliares).toFixed(2);
+    let $divResultado = document.querySelector("#resultado");
 
-  $divResultado.innerText = resultado;
+    let resultado = `El familiar con mas edad tiene ${familiarMayor} años,
+    el menor tiene ${familiarMenor} ${familiarMenor > 1 ? "años " : "año "}
+     y  el promedio de edad en la familia es de ${promedioEdadFamilia} años`;
+
+    $divResultado.innerText = resultado;
+  }
 
   e.preventDefault();
 };
@@ -97,50 +163,3 @@ $botonEmpezarDeNuevo.onclick = function (e) {
   EmpezarDeNuevo();
   e.preventDefault();
 };
-
-function EmpezarDeNuevo() {
-  document.querySelector("#cantidad-familiares").value = "";
-  document.querySelector("#resultado").innerText = "";
-  let divsExistentes = document.querySelectorAll(".div-familiar");
-  for (let i = 0; i < divsExistentes.length; i++) {
-    divsExistentes[i].remove();
-  }
-}
-function manejarErrorCantidad(error) {
-  let $errorCantidad = document.querySelector("#errores #error-cantidad");
-  let $cantidadFamiliares = document.querySelector("#cantidad-familiares");
-  if (error) {
-    $errorCantidad.innerText = error;
-    $errorCantidad.className = "";
-    $cantidadFamiliares.className = "error";
-  } else {
-    $errorCantidad.innerText = "";
-    $errorCantidad.className = "oculto";
-    $cantidadFamiliares.className = "";
-  }
-}
-
-function eliminarErrorRepetido($listaDeErrores, error) {
-  for (let i = 0; i < $listaDeErrores.length; i++) {
-    if (error === $listaDeErrores[i].innerText) {
-      $listaDeErrores[i].remove();
-    }
-  }
-}
-
-// function manejarErrores(errores) {
-//   const keys = Object.keys(errores);
-//   const $errores = document.querySelector("#errores");
-
-//   keys.forEach(function (key) {
-//     let $listaDeErrores=document.querySelectorAll("#errores li");
-//     const error = errores[key];
-//     for (let i = 0; i < $listaDeErrores.length; i++) {
-//       if (!($listaDeErrores[i].innerText === error)) {
-//         const $error = document.createElement("li");
-//         $error.innerText = error;
-//         $errores.appendChild($error)
-//       }
-//     }
-//   });
-// }
