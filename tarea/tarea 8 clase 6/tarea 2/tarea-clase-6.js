@@ -1,17 +1,11 @@
-/*
-TAREA: Empezar preguntando cuánta gente hay en el grupo familiar.
-Crear tantos inputs+labels como gente haya para completar la edad de cada integrante.
-Al hacer click en "calcular", mostrar en un elemento pre-existente la mayor edad, la menor edad y el promedio del grupo familiar.
+/*# Tarea clase 8
 
-Punto bonus: Crear un botón para "empezar de nuevo" que empiece el proceso nuevamente, borrando los inputs ya creados (investigar cómo en MDN).
-*/
+A las 2 tareas de la clase 6, ponerles las validaciones que consideren
+necesarias.
 
-/*
-TAREA 2:
-Crear una interfaz que permita agregar ó quitar (botones agregar y quitar) inputs+labels para completar el salario anual de cada integrante de la familia que trabaje.
-Al hacer click en "calcular", mostrar en un elemento pre-existente el mayor salario anual, menor salario anual, salario anual promedio y salario mensual promedio.
+regExp ,objetos ,forEach,Estils,mostrar errores en interfas ususarios  y escribir pruebas
 
-Punto bonus: si hay inputs vacíos, ignorarlos en el cálculo (no contarlos como 0).
+TIP: Las edades no pueden tener decimales.
 */
 
 const $btnAgregar = document.querySelector("#agregar");
@@ -19,19 +13,26 @@ const $btnQuitar = document.querySelector("#quitar");
 const $btnCalcular = document.querySelector("#calcular");
 
 $btnAgregar.onclick = function (e) {
-  const $divInputs = document.querySelector("#inputs");
-  const $divSalarios = document.createElement("div");
+  let cantidadFamiliares = document.querySelectorAll(".salario-anual").length;
 
-  const $labelSalario = document.createElement("label");
-  $labelSalario.innerText = "ingresar salario anual : ";
+  const esValido = validarCantidadSalarios(cantidadFamiliares) === "";
 
-  const $inputSalario = document.createElement("input");
-  $inputSalario.placeholder = "00000.00";
-  $inputSalario.className = "salario-anual";
+  if (esValido) {
+    console.log(cantidadFamiliares);
+    const $divInputs = document.querySelector("#inputs");
+    const $divSalarios = document.createElement("div");
 
-  $divSalarios.appendChild($labelSalario);
-  $divSalarios.appendChild($inputSalario);
-  $divInputs.append($divSalarios);
+    const $labelSalario = document.createElement("label");
+    $labelSalario.innerText = "ingresar salario anual : ";
+
+    const $inputSalario = document.createElement("input");
+    $inputSalario.placeholder = "00000.00";
+    $inputSalario.className = "salario-anual";
+
+    $divSalarios.appendChild($labelSalario);
+    $divSalarios.appendChild($inputSalario);
+    $divInputs.append($divSalarios);
+  }
 };
 
 function extraerNumeros(listaDeNumeros) {
@@ -48,14 +49,19 @@ $btnCalcular.onclick = function (e) {
   const $salarios = document.querySelectorAll(".salario-anual");
   const salarios = extraerNumeros($salarios);
 
-  const salarioPromedioMensual = (calcularPromedio(salarios) / 12).toFixed(2);
+  let esExito = manjerarErrorSalario($salarios) === 0;
+  if (esExito) {
+    const salarioPromedioMensual = (calcularPromedio(salarios) / 12).toFixed(2);
 
-  mostrarSalario(extraerNumeroMayor(salarios), "mayor");
-  mostrarSalario(extraerNumeroMenor(salarios), "menor");
-  mostrarSalario(calcularPromedio(salarios), "promedio-anual");
-  mostrarSalario(salarioPromedioMensual, "promedio-mensual");
+    mostrarSalario(extraerNumeroMayor(salarios), "mayor");
+    mostrarSalario(extraerNumeroMenor(salarios), "menor");
+    mostrarSalario(calcularPromedio(salarios), "promedio-anual");
+    mostrarSalario(salarioPromedioMensual, "promedio-mensual");
 
-  mostrarResultado();
+    mostrarResultado();
+  } else {
+    ocultarResultado();
+  }
 };
 
 $btnQuitar.onclick = function (e) {
@@ -76,4 +82,53 @@ function mostrarResultado() {
 function ocultarResultado() {
   let $resultado = document.querySelector("#resultado");
   $resultado.className = "oculto";
+}
+
+function validarSalario(salario) {
+  if (salario === "") {
+    return "este campo no puede estar vacio";
+  } else if (!/^[0-9]+$/i.test(salario)) {
+    return "este campo solo permite numeros";
+  }
+}
+function validarCantidadSalarios(salarios) {
+  if (salarios >= 10) {
+    return "El maximo de salarios es de 10";
+  }
+  return "";
+}
+function manjerarErrorSalario($salarios) {
+  const $ulErrores = document.querySelector("#errores");
+  const $liErrores = document.querySelectorAll("#errores .error-salario");
+  let cantidadErrores = 0;
+  for (let i = 0; i < $liErrores.length; i++) {
+    $liErrores[i].remove();
+  }
+  $salarios.forEach(function ($inputSalario) {
+    const errorSalario = validarSalario($inputSalario.value);
+    if (errorSalario) {
+      cantidadErrores++;
+      $inputSalario.classList.add("error");
+      let esRepetido = validarRepetidoEnLista(errorSalario);
+      if (!esRepetido) {
+        let $liError = document.createElement("li");
+        $liError.innerText = errorSalario;
+        $liError.className = "error-salario";
+        $ulErrores.appendChild($liError);
+      }
+    } else {
+      $inputSalario.classList.remove("error");
+    }
+  });
+  return cantidadErrores;
+}
+function validarRepetidoEnLista(errorSalario) {
+  const $liErrores = document.querySelectorAll("#errores .error-salario");
+  for (let i = 0; i < $liErrores.length; i++) {
+    if (errorSalario === $liErrores[i].innerText) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
